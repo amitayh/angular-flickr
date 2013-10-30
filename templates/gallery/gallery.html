@@ -7,14 +7,12 @@
     <p ng-bind-html="gallery.description | content"></p>
 
     <div class="row" ng-repeat="row in photos">
-        <div class="col-md-4 text-center" ng-repeat="photo in row">
-            <figure>
-                <a href="#/gallery/{{ gallery.id }}/photo/{{ photo.id }}">
-                    <img class="img-thumbnail" ng-src="{{ photo | photoUrl }}" alt="{{ photo.title }}" spinner>
-                </a>
-                <figcaption>{{ photo.title }}</figcaption>
-            </figure>
-        </div>
+        <figure class="col-md-4 text-center" ng-repeat="photo in row">
+            <a href="#/gallery/{{ gallery.id }}/photo/{{ photo.id }}">
+                <img class="img-thumbnail" ng-src="{{ photo | photoUrl }}" alt="{{ photo.title }}" spinner>
+            </a>
+            <figcaption>{{ photo.title }}</figcaption>
+        </figure>
     </div>
 
     <ul class="pagination" ng-show="pagination.pages > 1">

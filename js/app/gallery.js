@@ -22,6 +22,8 @@ angular.module('gallery', ['services', 'ngSanitize'])
     .constant('LOADING_IMAGE', '/images/ajax-loader.gif')
     .constant('FLICKR_API_KEY', '<YOUR API KEY>')
     .constant('FLICKR_USER_ID', '<YOUR USER ID>')
+    .constant('GALLERY_ROWS', 3)
+    .constant('GALLERY_COLUMNS', 3)
 
     // Services
     .factory('flickr', function(FlickrAPI, FLICKR_API_KEY) {
@@ -35,17 +37,19 @@ angular.module('gallery', ['services', 'ngSanitize'])
             $scope.galleries = result.photoset;
         });
     })
-    .controller('GalleryCtrl', function($scope, $routeParams, flickr, util, Pagination) {
+    .controller('GalleryCtrl', function($scope, $routeParams, flickr, util, Pagination,
+                                        GALLERY_ROWS, GALLERY_COLUMNS) {
+
         var setId = $routeParams.id,
             page = parseInt($routeParams.page || 1),
-            rows = 3, columns = 3, perPage = rows * columns;
+            perPage = GALLERY_ROWS * GALLERY_COLUMNS;
 
         $scope.gallery = flickr.getSetInfo(setId);
         $scope.pagination = new Pagination(page, perPage);
         $scope.photos = null;
         flickr.getPhotos(setId, perPage, page).then(function(result) {
             $scope.pagination.pages = result.pages;
-            $scope.photos = util.group(result.photo, columns);
+            $scope.photos = util.group(result.photo, GALLERY_COLUMNS);
         });
     })
     .controller('PhotoCtrl', function($scope, $routeParams, flickr) {
