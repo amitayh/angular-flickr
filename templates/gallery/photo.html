@@ -1,0 +1,11 @@
+<div ng-hide="photo">
+    Loading photo...
+</div>
+
+<div ng-show="photo">
+    <h2>{{ photo.title | content }}</h2>
+    <figure class="row text-center">
+        <img class="img-thumbnail" ng-src="{{ photo | photoUrlLarge }}" alt="{{ photo.title }}" spinner>
+        <figcaption ng-bind-html="photo.description | content"></figcaption>
+    </figure>
+</div>

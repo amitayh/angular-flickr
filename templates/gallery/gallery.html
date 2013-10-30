@@ -1,0 +1,31 @@
+<div ng-hide="gallery">
+    Loading gallery...
+</div>
+
+<div ng-show="gallery">
+    <h2>{{ gallery.title | content }}</h2>
+    <p ng-bind-html="gallery.description | content"></p>
+
+    <div class="row" ng-repeat="row in photos">
+        <div class="col-md-4 text-center" ng-repeat="photo in row">
+            <figure>
+                <a href="#/gallery/{{ gallery.id }}/photo/{{ photo.id }}">
+                    <img class="img-thumbnail" ng-src="{{ photo | photoUrl }}" alt="{{ photo.title }}" spinner>
+                </a>
+                <figcaption>{{ photo.title }}</figcaption>
+            </figure>
+        </div>
+    </div>
+
+    <ul class="pagination" ng-show="pagination.pages > 1">
+        <li ng-class="{disabled: pagination.isFirst()}">
+            <a href="#/gallery/{{ gallery.id }}/{{ pagination.prevPage() }}">&laquo;</a>
+        </li>
+        <li ng-repeat="page in pagination.pagesRange()" ng-class="{active: pagination.isCurrent(page)}">
+            <a href="#/gallery/{{ gallery.id }}/{{ page }}">{{ page }}</a>
+        </li>
+        <li ng-class="{disabled: pagination.isLast()}">
+            <a href="#/gallery/{{ gallery.id }}/{{ pagination.nextPage() }}">&raquo;</a>
+        </li>
+    </ul>
+</div>

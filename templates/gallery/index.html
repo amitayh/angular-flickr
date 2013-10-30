@@ -1,0 +1,17 @@
+<div ng-hide="galleries">
+    Loading galleries...
+</div>
+<ul ng-show="galleries">
+    <li class="row" ng-repeat="gallery in galleries">
+        <div class="col-md-3">
+            <img class="img-thumbnail" ng-src="{{ gallery | thumbnail }}" alt="{{ gallery.title | content }}">
+        </div>
+        <div class="col-md-9">
+            <h3>
+                <a href="#/gallery/{{ gallery.id }}">{{ gallery.title | content }}</a>
+                <small class="text-muted">{{ gallery.photos }} photos</small>
+            </h3>
+            <div ng-bind-html="gallery.description | content"></div>
+        </div>
+    </li>
+</ul>
