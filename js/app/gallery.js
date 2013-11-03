@@ -15,8 +15,8 @@ angular.module('gallery', ['services', 'ngSanitize'])
         $routeProvider.when('/gallery/:id/:page', route);
     })
     .constant('BLANK_IMAGE', '/images/blank.gif')
-    .constant('FLICKR_API_KEY', '4848c9234b56ca756586ea285be3b34a')
-    .constant('FLICKR_USER_ID', '95572727@N00')
+    .constant('FLICKR_API_KEY', '<YOUR API KEY>')
+    .constant('FLICKR_USER_ID', '<YOUR USER ID>')
     .constant('GALLERY_ROWS', 3)
     .constant('GALLERY_COLUMNS', 3)
 
