@@ -1,0 +1,12 @@
+.thumbnails-row {
+    margin-bottom: 30px;
+}
+
+.img-thumbnail,
+.thumbnail img {
+    background: url(../images/ajax-loader.gif) no-repeat center;
+}
+
+.thumbnail.active {
+    border-color: #428bca;
+}

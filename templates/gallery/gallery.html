@@ -1,29 +1,24 @@
-<div ng-hide="gallery">
-    Loading gallery...
-</div>
+<h2>{{ setInfo.title | content }}</h2>
+<p ng-bind-html="setInfo.description | content"></p>
 
-<div ng-show="gallery">
-    <h2>{{ gallery.title | content }}</h2>
-    <p ng-bind-html="gallery.description | content"></p>
-
-    <div class="row" ng-repeat="row in photos">
-        <figure class="col-md-4 text-center" ng-repeat="photo in row">
-            <a href="#/gallery/{{ gallery.id }}/photo/{{ photo.id }}">
-                <img class="img-thumbnail" ng-src="{{ photo | photoUrl }}" alt="{{ photo.title }}" spinner>
-            </a>
-            <figcaption>{{ photo.title }}</figcaption>
-        </figure>
+<div class="row text-center">
+    <div class="col-md-5">
+        <div class="row thumbnails-row" ng-repeat="row in photos">
+            <div class="col-md-4" ng-repeat="photo in row">
+                <div class="thumbnail" ng-click="setSelected(photo)" ng-class="{active: isSelected(photo)}">
+                    <img ng-src="{{ photo | photoThumbnail }}" alt="{{ photo.title }}" width="150" height="150" spinner>
+                </div>
+            </div>
+        </div>
+        <label for="page-selector">Page:</label>
+        <select id="page-selector" ng-model="page" ng-options="p for p in pages"></select>
     </div>
+    <figure class="col-md-7">
+        <img ng-src="{{ selectedPhoto | photoLarge }}"
+             alt="{{ selectedPhoto.title }}"
+             class="img-thumbnail"
+             spinner>
 
-    <ul class="pagination" ng-show="pagination.pages > 1">
-        <li ng-class="{disabled: pagination.isFirst()}">
-            <a href="#/gallery/{{ gallery.id }}/{{ pagination.prevPage() }}">&laquo;</a>
-        </li>
-        <li ng-repeat="page in pagination.pagesRange()" ng-class="{active: pagination.isCurrent(page)}">
-            <a href="#/gallery/{{ gallery.id }}/{{ page }}">{{ page }}</a>
-        </li>
-        <li ng-class="{disabled: pagination.isLast()}">
-            <a href="#/gallery/{{ gallery.id }}/{{ pagination.nextPage() }}">&raquo;</a>
-        </li>
-    </ul>
+        <figcaption>{{ selectedPhoto.title }}</figcaption>
+    </figure>
 </div>

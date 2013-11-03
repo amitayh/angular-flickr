@@ -2,26 +2,21 @@ angular.module('gallery', ['services', 'ngSanitize'])
 
     // Config
     .config(function($routeProvider) {
+        var route = {
+            templateUrl: 'templates/gallery/gallery.html',
+            controller: 'GalleryCtrl'
+        };
+
         $routeProvider.when('/gallery', {
             templateUrl: 'templates/gallery/index.html',
             controller: 'IndexCtrl'
         });
-        $routeProvider.when('/gallery/:id', {
-            templateUrl: 'templates/gallery/gallery.html',
-            controller: 'GalleryCtrl'
-        });
-        $routeProvider.when('/gallery/:gallery/photo/:id', {
-            templateUrl: 'templates/gallery/photo.html',
-            controller: 'PhotoCtrl'
-        });
-        $routeProvider.when('/gallery/:id/:page', {
-            templateUrl: 'templates/gallery/gallery.html',
-            controller: 'GalleryCtrl'
-        });
+        $routeProvider.when('/gallery/:id', route);
+        $routeProvider.when('/gallery/:id/:page', route);
     })
-    .constant('LOADING_IMAGE', '/images/ajax-loader.gif')
-    .constant('FLICKR_API_KEY', '<YOUR API KEY>')
-    .constant('FLICKR_USER_ID', '<YOUR USER ID>')
+    .constant('BLANK_IMAGE', '/images/blank.gif')
+    .constant('FLICKR_API_KEY', '4848c9234b56ca756586ea285be3b34a')
+    .constant('FLICKR_USER_ID', '95572727@N00')
     .constant('GALLERY_ROWS', 3)
     .constant('GALLERY_COLUMNS', 3)
 
@@ -37,28 +32,39 @@ angular.module('gallery', ['services', 'ngSanitize'])
             $scope.galleries = result.photoset;
         });
     })
-    .controller('GalleryCtrl', function($scope, $routeParams, flickr, util, Pagination,
+    .controller('GalleryCtrl', function($scope, $routeParams, $location, flickr, util,
                                         GALLERY_ROWS, GALLERY_COLUMNS) {
 
         var setId = $routeParams.id,
             page = parseInt($routeParams.page || 1),
             perPage = GALLERY_ROWS * GALLERY_COLUMNS;
 
-        $scope.gallery = flickr.getSetInfo(setId);
-        $scope.pagination = new Pagination(page, perPage);
-        $scope.photos = null;
-        flickr.getPhotos(setId, perPage, page).then(function(result) {
-            $scope.pagination.pages = result.pages;
-            $scope.photos = util.group(result.photo, GALLERY_COLUMNS);
+        $scope.isSelected = function(photo) {
+            return (photo.id === $scope.selectedPhoto.id);
+        };
+
+        $scope.setSelected = function(photo) {
+            $scope.selectedPhoto = photo;
+        };
+
+        $scope.$watch('page', function(newValue, oldValue) {
+            if (newValue !== oldValue && oldValue !== undefined) {
+                $location.path('/gallery/' + setId + '/' + newValue);
+            }
         });
-    })
-    .controller('PhotoCtrl', function($scope, $routeParams, flickr) {
-        var photoId = $routeParams.id;
-        $scope.photo = flickr.getPhotoInfo(photoId);
+
+        $scope.setInfo = flickr.getSetInfo(setId);
+
+        flickr.getPhotos(setId, perPage, page).then(function(result) {
+            $scope.page = page;
+            $scope.pages = util.range(1, parseInt(result.pages));
+            $scope.photos = util.group(result.photo, GALLERY_COLUMNS);
+            $scope.selectedPhoto = result.photo[0];
+        });
     })
 
     // Directives
-    .directive('spinner', function(LOADING_IMAGE) {
+    .directive('spinner', function(BLANK_IMAGE) {
         return {
             restrict: 'A',
             link: function (scope, elem, attrs) {
@@ -66,7 +72,7 @@ angular.module('gallery', ['services', 'ngSanitize'])
                     elem[0].src = src;
                 }
                 attrs.$observe('src', function(src) {
-                    changeSrc(LOADING_IMAGE);
+                    changeSrc(BLANK_IMAGE);
                     var img = new Image();
                     img.onload = function() { changeSrc(src); };
                     img.src = src;
@@ -81,7 +87,7 @@ angular.module('gallery', ['services', 'ngSanitize'])
             return value ? value._content : '';
         };
     })
-    .filter('thumbnail', function(FlickrAPI) {
+    .filter('galleryThumbnail', function(FlickrAPI) {
         return function(gallery) {
             return FlickrAPI.getPhotoUrl({
                 farm: gallery.farm,
@@ -91,13 +97,13 @@ angular.module('gallery', ['services', 'ngSanitize'])
             }, FlickrAPI.Size.Small);
         };
     })
-    .filter('photoUrl', function(FlickrAPI) {
+    .filter('photoThumbnail', function(FlickrAPI) {
         return function(photo) {
-            return photo ? FlickrAPI.getPhotoUrl(photo, FlickrAPI.Size.Medium) : '';
+            return photo ? FlickrAPI.getPhotoUrl(photo, FlickrAPI.Size.LargeSquare) : '';
         };
     })
-    .filter('photoUrlLarge', function(FlickrAPI) {
+    .filter('photoLarge', function(FlickrAPI) {
         return function(photo) {
-            return photo ? FlickrAPI.getPhotoUrl(photo, FlickrAPI.Size.Large) : '';
+            return photo ? FlickrAPI.getPhotoUrl(photo, FlickrAPI.Size.Medium640) : '';
         };
     });
