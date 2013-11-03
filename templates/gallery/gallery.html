@@ -5,13 +5,27 @@
     <div class="col-md-5">
         <div class="row thumbnails-row" ng-repeat="row in photos">
             <div class="col-md-4" ng-repeat="photo in row">
-                <div class="thumbnail" ng-click="setSelected(photo)" ng-class="{active: isSelected(photo)}">
-                    <img ng-src="{{ photo | photoThumbnail }}" alt="{{ photo.title }}" width="150" height="150" spinner>
+                <div class="thumbnail" ng-click="setSelectedPhoto(photo)" ng-class="{active: photoIsSelected(photo)}">
+                    <img width="150" height="150" ng-src="{{ photo | photoThumbnail }}" alt="{{ photo.title }}" spinner>
                 </div>
             </div>
         </div>
-        <label for="page-selector">Page:</label>
-        <select id="page-selector" ng-model="page" ng-options="p for p in pages"></select>
+
+        <div class="row">
+            <div class="col-md-4 text-right">
+                <button type="button" class="btn btn-default" ng-click="prevPage()" ng-hide="pageIsFirst()">
+                    <span class="glyphicon glyphicon-chevron-left"></span> Prev
+                </button>
+            </div>
+            <div class="col-md-4">
+                <select class="form-control" ng-model="page" ng-options="p for p in pagesRange"></select>
+            </div>
+            <div class="col-md-4 text-left">
+                <button type="button" class="btn btn-default" ng-click="nextPage()" ng-hide="pageIsLast()">
+                    Next <span class="glyphicon glyphicon-chevron-right"></span>
+                </button>
+            </div>
+        </div>
     </div>
     <figure class="col-md-7">
         <img ng-src="{{ selectedPhoto | photoLarge }}"

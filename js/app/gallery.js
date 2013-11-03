@@ -39,13 +39,12 @@ angular.module('gallery', ['services', 'ngSanitize'])
             page = parseInt($routeParams.page || 1),
             perPage = GALLERY_ROWS * GALLERY_COLUMNS;
 
-        $scope.isSelected = function(photo) {
-            return (photo.id === $scope.selectedPhoto.id);
-        };
-
-        $scope.setSelected = function(photo) {
-            $scope.selectedPhoto = photo;
-        };
+        $scope.setSelectedPhoto = function(photo) { $scope.selectedPhoto = photo; };
+        $scope.photoIsSelected = function(photo) { return photo.id === $scope.selectedPhoto.id; };
+        $scope.pageIsFirst = function() { return $scope.page === undefined || $scope.page === 1; };
+        $scope.pageIsLast = function() { return $scope.page === $scope.pages; };
+        $scope.prevPage = function() { $scope.page--; };
+        $scope.nextPage = function() { $scope.page++; };
 
         $scope.$watch('page', function(newValue, oldValue) {
             if (newValue !== oldValue && oldValue !== undefined) {
@@ -54,10 +53,10 @@ angular.module('gallery', ['services', 'ngSanitize'])
         });
 
         $scope.setInfo = flickr.getSetInfo(setId);
-
         flickr.getPhotos(setId, perPage, page).then(function(result) {
             $scope.page = page;
-            $scope.pages = util.range(1, parseInt(result.pages));
+            $scope.pages = parseInt(result.pages);
+            $scope.pagesRange = util.range(1, $scope.pages);
             $scope.photos = util.group(result.photo, GALLERY_COLUMNS);
             $scope.selectedPhoto = result.photo[0];
         });
