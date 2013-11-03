@@ -1,17 +1,19 @@
+<p ng-hide="photos">Loading...</p>
+
 <h2>{{ setInfo.title | content }}</h2>
 <p ng-bind-html="setInfo.description | content"></p>
 
-<div class="row text-center">
+<div ng-show="photos" class="row text-center">
     <div class="col-md-5">
         <div class="row thumbnails-row" ng-repeat="row in photos">
             <div class="col-md-4" ng-repeat="photo in row">
-                <div class="thumbnail" ng-click="setSelectedPhoto(photo)" ng-class="{active: photoIsSelected(photo)}">
+                <a href="" class="thumbnail" ng-click="setSelectedPhoto(photo)" ng-class="{active: photoIsSelected(photo)}">
                     <img width="150" height="150" ng-src="{{ photo | photoThumbnail }}" alt="{{ photo.title }}" spinner>
-                </div>
+                </a>
             </div>
         </div>
 
-        <div class="row">
+        <div class="row" ng-show="showNavigation()">
             <div class="col-md-4 text-right">
                 <button type="button" class="btn btn-default" ng-click="prevPage()" ng-hide="pageIsFirst()">
                     <span class="glyphicon glyphicon-chevron-left"></span> Prev

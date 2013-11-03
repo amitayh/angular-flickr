@@ -41,10 +41,11 @@ angular.module('gallery', ['services', 'ngSanitize'])
 
         $scope.setSelectedPhoto = function(photo) { $scope.selectedPhoto = photo; };
         $scope.photoIsSelected = function(photo) { return photo.id === $scope.selectedPhoto.id; };
-        $scope.pageIsFirst = function() { return $scope.page === undefined || $scope.page === 1; };
         $scope.pageIsLast = function() { return $scope.page === $scope.pages; };
-        $scope.prevPage = function() { $scope.page--; };
+        $scope.pageIsFirst = function() { return $scope.page === 1; };
+        $scope.showNavigation = function() { return $scope.pages > 1; };
         $scope.nextPage = function() { $scope.page++; };
+        $scope.prevPage = function() { $scope.page--; };
 
         $scope.$watch('page', function(newValue, oldValue) {
             if (newValue !== oldValue && oldValue !== undefined) {
