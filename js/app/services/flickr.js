@@ -62,13 +62,6 @@ angular.module('services').factory('FlickrAPI', function($http, util) {
         return this.getData(params, 'photoset');
     };
 
-    FlickrAPI.prototype.getPhotoInfo = function(photoId) {
-        return this.getData({
-            method: 'flickr.photos.getInfo',
-            photo_id: photoId
-        }, 'photo');
-    };
-
     FlickrAPI.Size = {
         Square:         '_s',
         LargeSquare:    '_q',

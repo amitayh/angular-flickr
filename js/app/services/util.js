@@ -30,9 +30,6 @@ angular.module('services').factory('util', function() {
                 result.push(group);
             }
             return result;
-        },
-        startsWith: function(string, prefix) {
-            return string.substr(0, prefix.length) == prefix;
         }
     };
 });
