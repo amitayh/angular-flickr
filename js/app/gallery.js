@@ -15,6 +15,7 @@ angular.module('gallery', ['services', 'ngSanitize'])
         $routeProvider.when('/gallery/:id/:page', route);
     })
     .constant('BLANK_IMAGE', '/images/blank.gif')
+    .constant('DEFAULT_SIZE', 150)
     .constant('FLICKR_API_KEY', '<YOUR API KEY>')
     .constant('FLICKR_USER_ID', '<YOUR USER ID>')
     .constant('GALLERY_ROWS', 3)
@@ -64,17 +65,23 @@ angular.module('gallery', ['services', 'ngSanitize'])
     })
 
     // Directives
-    .directive('spinner', function(BLANK_IMAGE) {
+    .directive('spinner', function(BLANK_IMAGE, DEFAULT_SIZE) {
         return {
             restrict: 'A',
             link: function (scope, elem, attrs) {
-                function changeSrc(src) {
-                    elem[0].src = src;
+                function update(src, width, height) {
+                    elem.attr({
+                        src: src,
+                        width: width || DEFAULT_SIZE,
+                        height: height || DEFAULT_SIZE
+                    });
                 }
                 attrs.$observe('src', function(src) {
-                    changeSrc(BLANK_IMAGE);
+                    update(BLANK_IMAGE);
                     var img = new Image();
-                    img.onload = function() { changeSrc(src); };
+                    img.onload = function() {
+                        update(src, img.width, img.height);
+                    };
                     img.src = src;
                 });
             }
