@@ -1,0 +1,14 @@
+{
+  "name": "angular-flickr",
+  "version": "0.0.1",
+  "homepage": "https://github.com/amitayh/angular-flickr",
+  "authors": ["Amitay Horwitz <amitayh@gmail.com>"],
+  "description": "AngularJS experiment with Flickr API",
+  "license": "MIT",
+  "dependencies": {
+    "angular": "1.0.8",
+    "angular-sanitize": "1.0.8",
+    "angular-mocks": "1.0.8",
+    "bootstrap": "3.0.*"
+  }
+}
