@@ -30,10 +30,12 @@
         </div>
     </div>
     <figure class="col-md-7">
-        <img ng-src="{{ selectedPhoto | photoLarge }}"
-             alt="{{ selectedPhoto.title }}"
-             class="img-thumbnail"
-             spinner>
+        <a href="http://www.flickr.com/photos/{{ setInfo.title }}/{{ selectedPhoto.id }}/">
+            <img ng-src="{{ selectedPhoto | photoLarge }}"
+                 alt="{{ selectedPhoto.title }}"
+                 class="img-thumbnail"
+                 spinner>
+        </a>
 
         <figcaption>{{ selectedPhoto.title }}</figcaption>
     </figure>
