@@ -2,10 +2,12 @@ describe('services.util', function() {
 
     var service;
 
-    beforeEach(module('services'));
-    beforeEach(inject(function(util) {
-        service = util;
-    }));
+    beforeEach(function() {
+        module('services');
+        inject(function(util) {
+            service = util;
+        });
+    });
 
     describe("'getQueryString' method", function() {
         it('should convert an object to a query string', function() {

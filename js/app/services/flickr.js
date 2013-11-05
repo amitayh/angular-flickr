@@ -1,4 +1,4 @@
-angular.module('services').factory('FlickrAPI', function($http, util) {
+angular.module('services').factory('FlickrAPI', function($http, $q, util) {
 
     var GATEWAY = 'http://api.flickr.com/services/rest/';
 
@@ -19,7 +19,7 @@ angular.module('services').factory('FlickrAPI', function($http, util) {
         return $http.jsonp(url).then(function(response) {
             var data = response.data;
             if (!data || data.stat !== 'ok') {
-                throw new Error(data.message || 'Error');
+                return $q.reject(data.message || 'Error');
             }
             return property ? data[property] : data;
         });

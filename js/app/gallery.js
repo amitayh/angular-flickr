@@ -66,23 +66,26 @@ angular.module('gallery', ['services', 'ngSanitize'])
 
     // Directives
     .directive('spinner', function(BLANK_IMAGE, DEFAULT_SIZE) {
+        function update(elem, src, width, height) {
+            elem.attr({
+                src: src,
+                width: width || DEFAULT_SIZE,
+                height: height || DEFAULT_SIZE
+            });
+        }
+
         return {
             restrict: 'A',
             link: function (scope, elem, attrs) {
-                function update(src, width, height) {
-                    elem.attr({
-                        src: src,
-                        width: width || DEFAULT_SIZE,
-                        height: height || DEFAULT_SIZE
-                    });
-                }
                 attrs.$observe('src', function(src) {
-                    update(BLANK_IMAGE);
-                    var img = new Image();
-                    img.onload = function() {
-                        update(src, img.width, img.height);
-                    };
-                    img.src = src;
+                    if (src) {
+                        update(elem, BLANK_IMAGE);
+                        var img = new Image();
+                        img.onload = function() {
+                            update(elem, src, img.width, img.height);
+                        };
+                        img.src = src;
+                    }
                 });
             }
         };
