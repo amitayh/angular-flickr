@@ -22,7 +22,7 @@ describe('services.util', function() {
 
             expect(qs).toEqual('key1=val1&key2=val2');
         });
-        it('should should escape unsafe characters', function() {
+        it('should escape unsafe characters', function() {
             var params = {name: "Ben & Jerry's"},
                 qs = service.getQueryString(params);
 
@@ -31,18 +31,20 @@ describe('services.util', function() {
     });
 
     describe("'range' method", function() {
-        it('should work in simple use cases', function() {
+        it('should create an array of numbers in range', function() {
             var range = service.range(1, 5);
+
             expect(range).toEqual([1, 2, 3, 4, 5]);
         });
-        it('should work with bigger step', function() {
+        it('should be able to use bigger steps', function() {
             var range = service.range(0, 10, 2);
+
             expect(range).toEqual([0, 2, 4, 6, 8, 10]);
         });
     });
 
     describe("'group' method", function() {
-        it('should work as expected', function() {
+        it('should break a flat array into N sized groups', function() {
             var flat = [1, 2, 3, 4, 5, 6, 7, 8, 9],
                 grouped = service.group(flat, 3);
 

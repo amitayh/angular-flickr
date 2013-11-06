@@ -41,6 +41,7 @@ describe('services.flickr', function () {
             httpBackend.expectJSONP(url).respond(data);
             flickr.getSets('1234').then(callback);
             httpBackend.flush();
+
             expect(callback).toHaveBeenCalledWith(photosets);
         });
         it('should fetch sets page', function() {
